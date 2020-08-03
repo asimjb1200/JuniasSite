@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const { key } = require('../data.js')
+const { key } = require('../stripekey/data.js')
 const stripe = require('stripe')(key);
 
 
