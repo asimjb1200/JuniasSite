@@ -20,7 +20,7 @@ body {
 .card {
   margin-left: 5px;
   margin-right: 5px;
-  border-color: green!important;
+  border-color: rgb(42, 128, 42)!important;
 }
 .navbar-brand {
   font-family: 'Tangerine', serif;

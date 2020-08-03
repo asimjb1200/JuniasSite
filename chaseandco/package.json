@@ -15,5 +15,8 @@
     "morgan": "~1.9.1",
     "pug": "2.0.0-beta11",
     "stripe": "^8.81.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
   }
 }
