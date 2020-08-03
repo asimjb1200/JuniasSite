@@ -1,0 +1,21 @@
+extends layout
+
+block content
+    h1 Hello From Bags
+    script.
+        let myData = !{JSON.stringify(bags)};
+        function cartHandler() {
+            console.log(myData)
+        }
+    br
+
+    .row.row-cols-1.row-cols-md-2
+        each val in bags.data
+            .col.mb-4
+                .card.h-100
+                    img.card-img-top(src=val.images[0], alt='custom bag')
+                    .card-body
+                        h5#cardIdentity.card-title #{val.name}
+                        p.card-text
+                        | #{val.description}
+                        a.btn.btn-primary(onclick='cartHandler()') View Details

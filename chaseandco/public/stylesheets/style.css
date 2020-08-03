@@ -1,0 +1,56 @@
+body {
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  padding-top: 70px;
+}
+
+/* a {
+  color: #00B7FF;
+} */
+
+.mainPink {
+  background-color: rgb(216, 23, 216);
+  font-weight: bold;
+  
+}
+
+.card-img-top {
+  height: 10em;
+}
+
+.card {
+  margin-left: 5px;
+  margin-right: 5px;
+  border-color: green!important;
+}
+.navbar-brand {
+  font-family: 'Tangerine', serif;
+  font-size: 25px!important;
+  text-shadow: 4px 4px 4px #aaa;
+}
+
+.tangerineFont {
+  font-weight: bold;
+  font-family: 'Tangerine', serif;
+}
+
+.btn-lg {
+  font-size: 2rem!important;
+}
+
+.mainPink a {
+  color: white;
+}
+
+.customBtn {
+  color: white;
+}
+
+.masthead {
+  height: 100vh;
+  min-height: 400px;
+  width: 100vw;
+  background-image: url('../images/chaseandco2.jpg');
+  /* background-size: auto; */
+  background-position: center;
+  background-repeat: no-repeat;
+}
