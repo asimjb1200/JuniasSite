@@ -17,6 +17,14 @@ body {
   height: 10em;
 }
 
+.image-container {
+}
+
+#dividerStyle {
+  border: 2px solid green;
+  border-radius: 5px;
+}
+
 .card {
   margin-left: 5px;
   margin-right: 5px;
