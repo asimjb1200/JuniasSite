@@ -44,6 +44,7 @@ router.get('/details/:productId', function(req, res, next) {
         {limit: 3, product: productId},
         function(err, price) {
           // asynchronously called
+          console.log(price);
           res.render('itemDetail', {product, price: (price.data[0].unit_amount)/100, })
         }
       );

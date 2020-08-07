@@ -7,3 +7,6 @@ block content
         hr#dividerStyle
         h1 #{product.name}
         h3 #{price}
+        label(for='validationDefault01') Quantity
+        input#validationDefault01.form-control(type='text', name='qty', required='', value='1')
+        button.productBtn(id=product.id) Add to Cart
