@@ -1,6 +1,8 @@
 body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   padding-top: 70px;
+  height: 100%;
+
 }
 
 /* a {
@@ -10,14 +12,19 @@ body {
 .mainPink {
   background-color: rgb(216, 23, 216);
   font-weight: bold;
-  
 }
 
 .card-img-top {
   height: 10em;
 }
 
-.image-container {
+.productBtn {
+  text-align: center;
+}
+
+.flex-container {
+  display: flex;
+  justify-content: center;
 }
 
 #dividerStyle {
@@ -60,5 +67,14 @@ body {
   background-image: url('../images/chaseandco2.jpg');
   /* background-size: auto; */
   background-position: center;
+  animation: zoom 30s infinite;
   background-repeat: no-repeat;
+}
+
+@keyframes zoom {
+0% { transform:scale(1,1); }
+50% { transform:scale(1.2,1.2); }
+100% {
+    transform:scale(1,1); 
+}
 }
