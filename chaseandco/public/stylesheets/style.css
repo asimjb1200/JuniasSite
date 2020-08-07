@@ -1,8 +1,37 @@
+@font-face {
+  font-family: 'Exo 2';
+  font-style: normal;
+  font-weight: 600;
+  src: url('../fonts/Exo_2/static/Exo2-LightItalic.ttf') format('truetype');
+}
+
+/* @font-face {
+  font-family: 'Alegreya';
+  font-style: normal;
+  font-weight: 600;
+  src: url('../fonts/Alegreya_Sans/AlegreyaSans-MediumItalic.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 600;
+  src: url('../fonts/Montserrat/Montserrat-Bold.ttf') format('truetype');
+} */
+
+@font-face {
+  font-family: 'Sarabun';
+  font-style: normal;
+  font-weight: 600;
+  src: url('../fonts/Sarabun/Sarabun-Medium.ttf') format('truetype');
+}
+
 body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   padding-top: 70px;
   height: 100%;
-
+  font-family: 'Exo 2'!important;
+  font-style: italic!important;
 }
 
 /* a {
@@ -14,14 +43,26 @@ body {
   font-weight: bold;
 }
 
+.navbar-brand {
+  font-size: 25px!important;
+  text-shadow: 4px 4px 4px #aaa;
+  /* font-family: 'Exo 2'!important; */
+  /* font-family: 'Alegreya'!important; */
+  /* font-family: 'Montserrat'!important; */
+  font-family: 'Exo 2';
+  font-weight: bold;
+}
+
 .card-img-top {
   height: 11em;
 }
 
+.col {
+  padding: 0!important;
+  min-width: 25%;
+}
+
 @media only screen and (max-width: 850px) {
-  .col {
-    padding: 0;
-  }
 
   .row {
     margin: 10px!important;
@@ -29,6 +70,7 @@ body {
 
   .col {
     padding: 0!important;
+    min-width: 50%;
   }
   
   .card {
@@ -45,6 +87,7 @@ body {
 .flex-container {
   display: flex;
   justify-content: center;
+  margin-bottom: 10px;
 }
 
 #dividerStyle {
@@ -57,11 +100,6 @@ body {
   margin-right: 5px;
   border-color: rgb(42, 128, 42)!important;
 }
-.navbar-brand {
-  font-family: 'Tangerine', serif;
-  font-size: 25px!important;
-  text-shadow: 4px 4px 4px #aaa;
-}
 
 .tangerineFont {
   font-weight: bold;
@@ -70,6 +108,7 @@ body {
 
 .btn-lg {
   font-size: 2rem!important;
+  font-family: 'Exo 2'!important;
 }
 
 .mainPink a {
@@ -81,14 +120,27 @@ body {
 }
 
 .masthead {
+  min-height: -webkit-fill-available;
   height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
   min-height: 400px;
   width: 100vw;
-  background-image: url('../images/chaseandco2.jpg');
-  /* background-size: auto; */
+  background: url('../images/chaseandco2.jpg');
+  background-size: auto;
   background-position: center;
-  animation: zoom 30s infinite;
+  background-attachment: fixed;
+  /* animation: zoom 30s infinite; */
   background-repeat: no-repeat;
+}
+
+.inputContainer {
+  width: 80px;
+  margin-right: 20px;
+  text-align: center;
+}
+
+.row img.productImage{
+  height: 300px!important;
 }
 
 

@@ -3,12 +3,17 @@ extends layout
 block content
     .container-fluid
         .row
-            img.mx-auto.d-block.img-fluid(src=product.images[0], alt='Responsive image')
+            img.mx-auto.d-block.img-fluid.productImage(src=product.images[0], alt='Responsive image')
         hr#dividerStyle
-        h1 #{product.name}
-        h3 $#{price}
+        .row
+            .col.text-center
+                h1 #{product.name}
+                h3 $#{price}
         .flex-container
-            div
-                input#validationDefault01.form-control(type='text', name='qty', placeholder='Qty.', required='', value='1')
-            div
-                button.btn.btn-success.productBtn.col-sm-4.offset-sm-4(id=product.id, type='button') Add to Cart
+            .inputContainer
+                input#validationDefault01.form-control(type='number', name='qty', placeholder='Qty.', required='', value='1')
+            .submitContainer
+                button.btn.btn-success.productBtn(id=product.id, type='button') Add to Cart
+        .row
+            .col.text-center
+                a.btn.btn-outline-success.productBtn(href='/checkout', type='button') Go To Checkout
