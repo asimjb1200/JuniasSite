@@ -17,7 +17,7 @@ router.get('/bags', function (req, res, next) {
 
   // return all products for viewing on bags page
   stripe.products.list(
-    {limit: 3},
+    {limit: 6},
     function(err, bags) {
       if (err) {
         res.render('bags', {title: 'Purses', err})
@@ -41,10 +41,9 @@ router.get('/details/:productId', function(req, res, next) {
     function(err, product) {
       // res.render('itemDetail', {product})
       stripe.prices.list(
-        {limit: 3, product: productId},
+        {limit: 1, product: productId},
         function(err, price) {
           // asynchronously called
-          console.log(price);
           res.render('itemDetail', {product, price: (price.data[0].unit_amount)/100, })
         }
       );

@@ -5,9 +5,10 @@ block content
         each val in bags.data
             .col.mb-4
                 .card.h-100
+                    span.badge.badge-dark Dark
                     img.card-img-top(src=val.images[0], alt='custom bag')
                     .card-body
                         h5#cardIdentity.card-title #{val.name}
                         p.card-text
                         | #{val.description}
-                        a.btn.btn-primary(href='/details/' + val.id) View Details
+                        a.btn.btn-outline-success(href='/details/' + val.id) View

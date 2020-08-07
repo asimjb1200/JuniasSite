@@ -15,8 +15,28 @@ body {
 }
 
 .card-img-top {
-  height: 10em;
+  height: 11em;
 }
+
+@media only screen and (max-width: 850px) {
+  .col {
+    padding: 0;
+  }
+
+  .row {
+    margin: 10px!important;
+  }
+
+  .col {
+    padding: 0!important;
+  }
+  
+  .card {
+    margin-left: 5px!important;
+    margin-right: 5px!important;
+  }
+}
+
 
 .productBtn {
   text-align: center;
@@ -70,6 +90,7 @@ body {
   animation: zoom 30s infinite;
   background-repeat: no-repeat;
 }
+
 
 @keyframes zoom {
 0% { transform:scale(1,1); }

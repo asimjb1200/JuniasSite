@@ -3,7 +3,7 @@ extends layout
 block content
     .container-fluid
         .row
-            img.mx-auto.d-block(src=product.images[0], alt='Responsive image')
+            img.mx-auto.d-block.img-fluid(src=product.images[0], alt='Responsive image')
         hr#dividerStyle
         h1 #{product.name}
         h3 $#{price}
