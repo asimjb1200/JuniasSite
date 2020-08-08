@@ -2,6 +2,16 @@
 
 let cart = JSON.parse(localStorage.getItem('products')) || [];
 let myStorage = window.localStorage;
+let checkoutButton = document.getElementById('goToCheckout');
+
+checkoutButton.addEventListener('click', event => {
+    let url = window.location.href;
+    let hash = location.hash;
+
+    let lineItems = JSON.stringify(cart)
+    
+    window.location.pathname = `/checkout/${lineItems}`;
+})
 
 
 let addToCart = (productId, qty) => {
@@ -41,6 +51,10 @@ if (window.location.pathname.includes('details')) {
             alert('Item Added')
         }
     })
+}
+
+if (window.location.pathname === '/checkout') {
+    console.log(cart)
 }
 
 

@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
-const { key } = require('../stripekey/data.js')
+const { key } = require('../stripekey/data.js');
+const { response } = require('express');
 const stripe = require('stripe')(key);
 
 
@@ -17,10 +18,10 @@ router.get('/bags', function (req, res, next) {
 
   // return all products for viewing on bags page
   stripe.products.list(
-    {limit: 20},
-    function(err, bags) {
+    { limit: 20 },
+    function (err, bags) {
       if (err) {
-        res.render('bags', {title: 'Purses', err})
+        res.render('bags', { title: 'Purses', err })
       } else {
         res.render('bags', { title: 'Purses', bags });
       }
@@ -28,34 +29,70 @@ router.get('/bags', function (req, res, next) {
   );
 });
 
-router.get('/checkout', function(req, res, next) {
-  res.render('cart')
+router.get('/checkout/:lineItems?', function (req, res, next) {
+  let lineItems = JSON.parse(req.params.lineItems)
+  let userCart = []
+
+  // lineItems.map(item => {
+  //     stripe.products.retrieve(
+  //       item.productId,
+  //       function (err, product) {
+  //         stripe.prices.list(
+  //           { limit: 1, product: product.id },
+  //           async function (err, price) {
+  //             // asynchronously called
+  //             userCart.push({ product, price: price.data[0].unit_amount, qty: item.qty })
+
+  //           }
+  //         );
+  //       }
+  //     )
+  //   })
+
+  for (let index = 0; index < lineItems.length; index++) {
+    const element = lineItems[index];
+    stripe.products.retrieve(
+      element.productId,
+      function (err, product) {
+        stripe.prices.list(
+          { limit: 1, product: product.id },
+          function (err, price) {
+            // asynchronously called
+            userCart.push({ product, price: price.data[0].unit_amount, qty: element.qty })
+            if (userCart.length === lineItems.length && !err) {
+              res.render('cart', {items: userCart})
+            }
+          }
+        );
+      }
+    )
+  }
 });
 
-router.get('/details/:productId', function(req, res, next) {
+router.get('/details/:productId', function (req, res, next) {
   let productId = req.params.productId;
 
   // fetch that products details
   stripe.products.retrieve(
     productId,
-    function(err, product) {
+    function (err, product) {
       // res.render('itemDetail', {product})
       stripe.prices.list(
-        {limit: 1, product: productId},
-        function(err, price) {
+        { limit: 1, product: productId },
+        function (err, price) {
           // asynchronously called
-          res.render('itemDetail', {product, price: (price.data[0].unit_amount)/100, })
+          res.render('itemDetail', { product, price: (price.data[0].unit_amount) / 100, })
         }
       );
     }
   );
-}) 
+})
 
 router.post('/submit-order', (req, res) => {
   console.log(req.body)
   res.end()
   // extract customer data
-  const {firstName, lastName, email, street, city, state, postal_code} = req.body;
+  const { firstName, lastName, email, street, city, state, postal_code } = req.body;
 
   // create a session for the customer
   // const session = await stripe.checkout.sessions.create({
