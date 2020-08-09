@@ -2,20 +2,47 @@
 
 let cart = JSON.parse(localStorage.getItem('products')) || [];
 let myStorage = window.localStorage;
-let checkoutButton = document.getElementById('goToCheckout');
 
-checkoutButton.addEventListener('click', event => {
-    let url = window.location.href;
-    let hash = location.hash;
 
-    let lineItems = JSON.stringify(cart)
-    
-    window.location.pathname = `/checkout/${lineItems}`;
+document.addEventListener('click', event => {
+    if (event.target.id === 'goToCheckout') {
+        let url = window.location.href;
+
+        let lineItems = JSON.stringify(cart)
+
+        window.location.pathname = `/checkout/${lineItems}`;
+    } else if (event.target.id === 'submit-cart') {
+        let url = window.location.href;
+
+        let lineItems = JSON.stringify(cart)
+
+        window.location.pathname = `/submit-cart/${lineItems}`;
+    }
 })
+
+if (window.location.pathname.includes('submit-cart')) {
+    let stripe = Stripe('pk_test_UtttavKVQLal6BPjzpFhAXZy00h8H6P8XV')
+    let checkoutButton = document.getElementById('checkout-button');
+
+    var sessionId = checkoutButton.getAttribute("data-secret")
+
+    checkoutButton.addEventListener('click', function () {
+        stripe.redirectToCheckout({
+            // Make the id field from the Checkout Session creation API response
+            // available to this file, so you can provide it as argument here
+            // instead of the {{CHECKOUT_SESSION_ID}} placeholder.
+            sessionId
+        }).then(function (result) {
+            // If `redirectToCheckout` fails due to a browser or network
+            // error, display the localized error message to your customer
+            // using `result.error.message`.
+        });
+    });
+}
 
 
 let addToCart = (productId, qty) => {
-    cart.push({productId, qty})
+    cart.push({ productId, qty })
     myStorage.setItem('products', JSON.stringify(cart))
 }
 

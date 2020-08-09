@@ -13,8 +13,6 @@ router.get('/', function (req, res, next) {
 
 /* GET bags page. */
 router.get('/bags', function (req, res, next) {
-  // Set your secret key. Remember to switch to your live secret key in production!
-  // See your keys here: https://dashboard.stripe.com/account/apikeys
 
   // return all products for viewing on bags page
   stripe.products.list(
@@ -33,39 +31,35 @@ router.get('/checkout/:lineItems?', function (req, res, next) {
   let lineItems = JSON.parse(req.params.lineItems)
   let userCart = []
 
-  // lineItems.map(item => {
-  //     stripe.products.retrieve(
-  //       item.productId,
-  //       function (err, product) {
-  //         stripe.prices.list(
-  //           { limit: 1, product: product.id },
-  //           async function (err, price) {
-  //             // asynchronously called
-  //             userCart.push({ product, price: price.data[0].unit_amount, qty: item.qty })
-
-  //           }
-  //         );
-  //       }
-  //     )
-  //   })
-
-  for (let index = 0; index < lineItems.length; index++) {
-    const element = lineItems[index];
-    stripe.products.retrieve(
-      element.productId,
-      function (err, product) {
-        stripe.prices.list(
-          { limit: 1, product: product.id },
-          function (err, price) {
-            // asynchronously called
-            userCart.push({ product, price: price.data[0].unit_amount, qty: element.qty })
-            if (userCart.length === lineItems.length && !err) {
-              res.render('cart', {items: userCart})
-            }
+  if (lineItems.length > 0) {
+    for (let index = 0; index < lineItems.length; index++) {
+      const element = lineItems[index];
+      stripe.products.retrieve(
+        element.productId,
+        function (error, product) {
+          if (error) {
+            console.log(error)
+          } else {
+            stripe.prices.list(
+              { limit: 1, product: product.id },
+              function (err, price) {
+                // asynchronously called
+                if (err) {
+                  console.log(err);
+                } else {
+                  userCart.push({ product, price: price.data[0].unit_amount, qty: element.qty })
+                  if (userCart.length === lineItems.length && !err) {
+                    res.render('cart', { items: userCart })
+                  }
+                }
+              }
+            );
           }
-        );
-      }
-    )
+        }
+      )
+    }
+  } else {
+    res.render('cart', { items: null })
   }
 });
 
@@ -88,70 +82,61 @@ router.get('/details/:productId', function (req, res, next) {
   );
 })
 
-router.post('/submit-order', (req, res) => {
-  console.log(req.body)
-  res.end()
-  // extract customer data
-  const { firstName, lastName, email, street, city, state, postal_code } = req.body;
+// router.get('/id')
 
-  // create a session for the customer
-  // const session = await stripe.checkout.sessions.create({
-  //   payment_method_types: ['card'],
-  //   line_items: [{
-  //     price_data: {
-  //       currency: 'usd',
-  //       product_data: {
-  //         name: 'T-shirt',
-  //       },
-  //       unit_amount: 2000,
-  //     },
-  //     quantity: 1,
-  //   }],
-  //   mode: 'payment',
-  //   success_url: 'https://example.com/success?session_id={CHECKOUT_SESSION_ID}',
-  //   cancel_url: 'https://example.com/cancel',
-  // });
+router.get('/submit-cart/:lineItems', (req, res) => {
+  // extract product data from the request
+  let userCart = JSON.parse(req.params.lineItems)
 
-  // create the customer in stripe
-  // stripe.customers.create(  
-  //   {
-  //     name: `${firstName} ${lastName}`,
-  //     email,
-  //     shipping: {
-  //         address: {
-  //           name: `${firstName} ${lastName}`,
-  //           line1: street,
-  //           city,
-  //           state,
-  //           postal_code
-  //       }
-  //     },
-  //     description: 'My First Test Customer (created for API docs)',
-  //   },
-  //   function(err, customer) {
-  //     // asynchronously called
-  //     res.end()
-  //   }
-  // );
+  let line_items = [];
+
+  userCart.forEach(element => {
+    // retrive price data for each product
+    stripe.products.retrieve(
+      element.productId,
+      function (err, item) {
+        stripe.prices.list(
+          { limit: 1, product: item.id },
+          async function (err, price) {
+            let name = item.name;
+            console.log(name)
+            // asynchronously called
+            line_items.push(
+              {
+                price_data: {
+                  currency: 'usd',
+                  product_data: {
+                    name
+                  },
+                  unit_amount: parseInt(price.data[0].unit_amount),
+                },
+                quantity: parseInt(element.qty)
+              }
+            );
+
+            // once every line item is added, start the checkout session
+            if (line_items.length === userCart.length) {
+              console.log('hey')
+              const session = await stripe.checkout.sessions.create({
+                payment_method_types: ['card'],
+                line_items,
+                shipping_address_collection: {
+                  allowed_countries: ['US'],
+                },
+                mode: 'payment',
+                success_url: 'http://localhost:3000/success?session_id={CHECKOUT_SESSION_ID}',
+                cancel_url: 'https://example.com/cancel',
+              });
+
+              console.log(session)
+
+              res.render('payment', { session_id: session.id })
+            }
+          }
+        )
+      }
+    );
+  });
 })
-
-// router.post("/create-payment-intent", async (req, res) => {
-//   const { items } = req.body;
-//   // Create a PaymentIntent with the order amount and currency
-//   const paymentIntent = await stripe.paymentIntents.create({
-//     amount: calculateOrderAmount(items),
-//     currency: "usd"
-//   });
-//   res.send({
-//     clientSecret: paymentIntent.client_secret
-//   });
-// });
-
-const calculateOrderAmount = items => {
-  // Replace this constant with a calculation of the order's amount
-  // Calculate the order total on the server to prevent
-  // people from directly manipulating the amount on the client
-  return 1400;
-};
 
 module.exports = router;
