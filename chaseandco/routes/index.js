@@ -14,14 +14,22 @@ router.get('/', function (req, res, next) {
 /* GET bags page. */
 router.get('/bags', function (req, res, next) {
 
+  let bagPrices = []
   // return all products for viewing on bags page
   stripe.products.list(
     { limit: 20 },
-    function (err, bags) {
+    async function (err, bags) {
       if (err) {
         res.render('bags', { title: 'Purses', err })
       } else {
-        res.render('bags', { title: 'Purses', bags });
+        const prices = await stripe.prices.list({
+          limit: 20,
+        })
+        for (let index = 0; index < prices.data.length; index++) {
+          const element = prices.data[index];
+          bagPrices.push({bag: bags.data[index], price: (element.unit_amount)/100})
+        }
+        res.render('bags', { title: 'Purses', bags: bagPrices });
       }
     }
   );
@@ -116,7 +124,6 @@ router.get('/submit-cart/:lineItems', (req, res) => {
 
             // once every line item is added, start the checkout session
             if (line_items.length === userCart.length) {
-              console.log('hey')
               const session = await stripe.checkout.sessions.create({
                 payment_method_types: ['card'],
                 line_items,
@@ -127,8 +134,6 @@ router.get('/submit-cart/:lineItems', (req, res) => {
                 success_url: 'http://localhost:3000/success?session_id={CHECKOUT_SESSION_ID}',
                 cancel_url: 'https://example.com/cancel',
               });
-
-              console.log(session)
 
               res.render('payment', { session_id: session.id })
             }

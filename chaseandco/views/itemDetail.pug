@@ -1,19 +1,18 @@
 extends layout
 
 block content
-    .container-fluid
-        .row
-            img.mx-auto.d-block.img-fluid.productImage(src=product.images[0], alt='Responsive image')
-        hr#dividerStyle
-        .row
-            .col.text-center
-                h1 #{product.name}
-                h3 $#{price}
-        .flex-container
-            .inputContainer
-                input#validationDefault01.form-control(type='number', name='qty', placeholder='Qty.', required='', value='1')
-            .submitContainer
-                button.btn.btn-success.productBtn(id=product.id, type='button') Add to Cart
-        .row
-            .col.text-center
-                button#goToCheckout.btn.btn-outline-success.productBtn(type='button') Go To Cart
+    .row
+        img.mx-auto.d-block.img-fluid.productImage(src=product.images[0], alt='Responsive image')
+    hr#dividerStyle
+    .row
+        .col.text-center
+            h1 #{product.name}
+            h3 $#{price}
+    .flex-container
+        .inputContainer
+            input#validationDefault01.form-control(type='number', name='qty', placeholder='Qty.', required='', value='1')
+        .submitContainer
+            button.btn.btn-success.productBtn(id=product.id, type='button') Add to Cart
+    .row
+        .col.text-center
+            button#goToCheckout.btn.btn-outline-success.productBtn(type='button') Go To Cart

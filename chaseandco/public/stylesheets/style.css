@@ -37,10 +37,27 @@ body {
 /* a {
   color: #00B7FF;
 } */
-
+.container-fluid {
+  padding: 0!important;
+}
 .mainPink {
-  background-color: rgb(216, 23, 216);
+  background-color: rgba(216, 23, 216, 0.9);
+  /* background-color: rgb(255, 255, 255); */
+  /* background-color: rgb(249, 207, 0); */
   font-weight: bold;
+}
+
+nav {
+  border-bottom: 1px solid rgb(216, 23, 216)!important;
+}
+
+.btn-outline-success {
+  border-color: rgb(216, 23, 216)!important;
+  color: rgb(216, 23, 216)!important;
+}
+
+.navbar {
+  padding-bottom: 0!important;
 }
 
 .navbar-brand {
@@ -49,12 +66,20 @@ body {
   /* font-family: 'Exo 2'!important; */
   /* font-family: 'Alegreya'!important; */
   /* font-family: 'Montserrat'!important; */
+  /* background-image: url('../images/chaseandco_noBG.png')!important; */
   font-family: 'Exo 2';
   font-weight: bold;
+  padding: 0!important;
+}
+
+.navbar-brand img {
+  height: 60px;
+  width: 100px;
 }
 
 .card-img-top {
   height: 11em;
+  border-radius: 0!important;
 }
 
 .col {
@@ -77,6 +102,18 @@ body {
     margin-left: 5px!important;
     margin-right: 5px!important;
   }
+
+  .masthead {
+    /* height: 100vh; */
+    /* width: 100;
+    background: url('../images/newLogo.JPG'); */
+    width: 100%;
+    background-size: 120vw;
+    /* background-position: center;
+    background-attachment: fixed;
+    animation: zoom 30s infinite;
+    background-repeat: no-repeat; */
+  }
 }
 
 
@@ -98,7 +135,14 @@ body {
 .card {
   margin-left: 5px;
   margin-right: 5px;
-  border-color: rgb(42, 128, 42)!important;
+  /* background-color: rgb(216, 23, 216); */
+
+  border: 3px solid rgb(216, 23, 216)!important;
+  border-radius: 0!important;
+}
+
+#submit-cart {
+  padding: 5px;
 }
 
 .tangerineFont {
@@ -117,20 +161,6 @@ body {
 
 .customBtn {
   color: white;
-}
-
-.masthead {
-  min-height: -webkit-fill-available;
-  height: 100vh;
-  height: calc(var(--vh, 1vh) * 100);
-  min-height: 400px;
-  width: 100vw;
-  background: url('../images/chaseandco2.jpg');
-  background-size: auto;
-  background-position: center;
-  background-attachment: fixed;
-  /* animation: zoom 30s infinite; */
-  background-repeat: no-repeat;
 }
 
 .inputContainer {

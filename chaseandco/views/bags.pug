@@ -2,13 +2,13 @@ extends layout
 
 block content
     .row.row-cols-1.row-cols-md-2
-        each val in bags.data
+        each val in bags
             .col.mb-4
                 .card.h-100
-                    span.badge.badge-dark Dark
-                    img.card-img-top(src=val.images[0], alt='custom bag')
+                    span.badge.badge-light $ #{val.price}
+                    img.card-img-top(src=val.bag.images[0], alt='custom bag')
                     .card-body
-                        h6#cardIdentity.card-title #{val.name}
+                        h6#cardIdentity.card-title #{val.bag.name}
                         p.card-text
-                        | #{val.description}
-                        a.btn.btn-outline-success(href='/details/' + val.id) View
+                        | #{val.bag.description}
+                        a.btn.btn-outline-success(href='/details/' + val.bag.id) View

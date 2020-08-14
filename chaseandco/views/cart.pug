@@ -12,19 +12,19 @@ block content
                         th(scope='col') Remove
                 tbody
                     each val in items
-                        tr
+                        tr(id='item_'+val.product.id)
                             th(scope='row')
                                 img.img-fluid.rounded.shadow-sm(src=val.product.images[0], alt='', width='70')
                                 .ml-3.d-inline-block.align-middle
                                 h5.mb-0
                                     a.text-dark.d-inline-block.align-middle(href='#') #{val.product.name}
                             td
-                                strong #{val.price}
+                                strong #{val.price/100}
                             td
                                 strong #{val.qty}
                             td
                                 a.text-dark(href='#')
-                                    i.fa.fa-trash
+                                    i#removeProduct.fa.fa-trash
         
         button#submit-cart.btn.btn-outline-success.productBtn(type='button') Go To Checkout
     else
