@@ -12,27 +12,15 @@ router.get('/', function (req, res, next) {
 });
 
 /* GET bags page. */
-router.get('/bags', function (req, res, next) {
-
+router.get('/bags', async function (req, res, next) {
   let bagPrices = []
-  // return all products for viewing on bags page
-  stripe.products.list(
-    { limit: 20 },
-    async function (err, bags) {
-      if (err) {
-        res.render('bags', { title: 'Purses', err })
-      } else {
-        const prices = await stripe.prices.list({
-          limit: 20,
-        })
-        for (let index = 0; index < prices.data.length; index++) {
-          const element = prices.data[index];
-          bagPrices.push({bag: bags.data[index], price: (element.unit_amount)/100})
-        }
-        res.render('bags', { title: 'Purses', bags: bagPrices });
-      }
-    }
-  );
+  const items = await stripe.products.list({limit: 20})
+  const prices = await stripe.prices.list({limit: 20})
+  for (let index = 0; index < prices.data.length; index++) {
+    const element = prices.data[index];
+    bagPrices.push({bag: items.data[index], price: (element.unit_amount)/100})
+  }
+  res.render('bags', { title: 'Purses', bags: bagPrices });
 });
 
 router.get('/checkout/:lineItems?', function (req, res, next) {
@@ -71,23 +59,11 @@ router.get('/checkout/:lineItems?', function (req, res, next) {
   }
 });
 
-router.get('/details/:productId', function (req, res, next) {
+router.get('/details/:productId', async function (req, res, next) {
   let productId = req.params.productId;
-
-  // fetch that products details
-  stripe.products.retrieve(
-    productId,
-    function (err, product) {
-      // res.render('itemDetail', {product})
-      stripe.prices.list(
-        { limit: 1, product: productId },
-        function (err, price) {
-          // asynchronously called
-          res.render('itemDetail', { product, price: (price.data[0].unit_amount) / 100, })
-        }
-      );
-    }
-  );
+  const product = await stripe.products.retrieve(productId)
+  const price = await stripe.prices.list({limit: 1, product: productId});
+  res.render('itemDetail', { product, price: (price.data[0].unit_amount) / 100, })
 })
 
 // router.get('/id')
