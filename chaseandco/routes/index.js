@@ -20,42 +20,23 @@ router.get('/bags', async function (req, res, next) {
     const element = prices.data[index];
     bagPrices.push({bag: items.data[index], price: (element.unit_amount)/100})
   }
+  console.log(items.data[0].metadata)
   res.render('bags', { title: 'Purses', bags: bagPrices });
 });
 
-router.get('/checkout/:lineItems?', function (req, res, next) {
+router.get('/checkout/:lineItems?', async function (req, res, next) {
   let lineItems = JSON.parse(req.params.lineItems)
   let userCart = []
 
-  if (lineItems.length > 0) {
-    for (let index = 0; index < lineItems.length; index++) {
-      const element = lineItems[index];
-      stripe.products.retrieve(
-        element.productId,
-        function (error, product) {
-          if (error) {
-            console.log(error)
-          } else {
-            stripe.prices.list(
-              { limit: 1, product: product.id },
-              function (err, price) {
-                // asynchronously called
-                if (err) {
-                  console.log(err);
-                } else {
-                  userCart.push({ product, price: price.data[0].unit_amount, qty: element.qty })
-                  if (userCart.length === lineItems.length && !err) {
-                    res.render('cart', { items: userCart })
-                  }
-                }
-              }
-            );
-          }
-        }
-      )
-    }
-  } else {
-    res.render('cart', { items: null })
+  for (let index = 0; index < lineItems.length; index++) {
+    const element = lineItems[index];
+    const product = await stripe.products.retrieve(element.productId)
+    const price = await stripe.prices.list({limit: 1, product: product.id})
+    userCart.push({ product, price: price.data[0].unit_amount, qty: element.qty })
+  }
+
+  if (userCart.length === lineItems.length) {
+    res.render('cart', { items: userCart })
   }
 });
 
